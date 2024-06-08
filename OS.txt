@@ -1,0 +1,704 @@
+SET 1 : (FACTORIAL & FCFS)
+
+a. Factorial:
+---Program:---
+
+read -p "Enter a number: " num
+fact=1
+while [ $num -gt 1 ]
+do
+  fact=$((fact * num))
+  num=$((num - 1))
+done
+echo $fact
+
+---Sample Input:---
+5
+
+
+b. FCFS Algorithm:
+---Program:---
+
+#include<stdio.h>
+void find_wt(int process[],int n,int burst[],int wt[]){
+    wt[0]=0;
+    for(int i=1;i<n;i++){
+        wt[i]=wt[i-1]+burst[i-1];
+    }
+}
+void find_tat(int process[],int n,int burst[],int wt[],int tat[]){
+    for(int i=0;i<n;i++){
+        tat[i]=wt[i]+burst[i];
+    }
+}
+void findAvg(int process[],int n,int burst[]){
+    int wt[n], tat[n], total_wt=0,total_tat=0;
+    find_wt(process,n,burst,wt);
+    find_tat(process,n,burst,wt,tat);
+    for(int i=0;i<n;i++){
+        total_wt+=wt[i];
+        total_tat+=tat[i];
+    }
+    float avgwt=(float)total_wt/(float)n;
+    float avgtat=(float)total_tat/(float)n;
+    printf("Average Waiting Time= %f \n",avgwt);
+    printf("Average Turn Around Time= %f",avgtat);
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int process[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&process[i]);
+    }
+    int burst[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&burst[i]);
+    }
+    findAvg(process,n,burst);
+}
+
+---Sample Input:---
+4
+1 2 3 4
+21 3 6 2
+
+
+
+
+SET 2 : (ARMSTRONG & SJF)
+
+a. Armstrong:
+---Program:---
+
+read -p "Enter a number: " num
+original_num=$num
+sum=0
+num_digits=${#num}
+while [ $num -gt 0 ]
+do
+  digit=$((num % 10))
+  sum=$((sum + digit**num_digits))
+  num=$((num / 10))
+done
+if [ $sum -eq $original_num ]; then
+  echo "$original_num is an Armstrong number."
+else
+  echo "$original_num is not an Armstrong number."
+fi
+
+---Sample Input:---
+153
+
+
+b. SJF Algorithm:
+---Program:---
+
+#include<stdio.h>
+int main(){
+    int wt[20],tat[20],n,i,j,temp,pos;
+    scanf("%d",&n);
+    int process[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&process[i]);
+    }
+    int burst[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&burst[i]);
+    }
+    for(int i=0;i<n;i++){
+        pos=i;
+        for(j=i+1;j<n;j++){
+            if(burst[j]<burst[pos]){
+                pos=j;
+            }
+        }
+        temp=burst[i];
+        burst[i]=burst[pos];
+        burst[pos]=temp;
+        temp=process[i];
+        process[i]=process[pos];
+        process[pos]=temp;
+    }
+    int total_wt=0;
+    wt[0]=0;
+    for(i=1;i<n;i++){
+        wt[i]=wt[i-1]+burst[i-1];
+        total_wt+=wt[i];
+    }
+    float avg_wt=(float)total_wt/(float)n;
+    printf("Average Waiting Time = %f",avg_wt);
+    int total_tat=0;
+    for(int i=0;i<n;i++){
+        tat[i]=wt[i]+burst[i];
+        total_tat+=tat[i];
+    }
+    float avg_tat=(float)total_tat/(float)n;
+    printf("\nAverage Turn Around Time = %f",avg_tat);
+}
+
+---Sample Input:---
+4
+1 2 3 4
+2 3 6 21
+
+
+
+
+SET 3 : (DAY_OF_WEEK & FCFS DISK)
+
+a. Day of week:
+---Program:---
+
+read -p "Enter a number: " num
+case $num in
+  1) day="Monday" ;;
+  2) day="Tuesday" ;;
+  3) day="Wednesday" ;;
+  4) day="Thursday" ;;
+  5) day="Friday" ;;
+  6) day="Saturday" ;;
+  7) day="Sunday" ;;
+  *) day="Invalid input" ;;
+esac
+echo $day
+
+---Sample Input:---
+3
+
+
+b. FCFS DISK Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int n,count=0,sleek=0,diff;
+    scanf("%d",&n);
+    int request[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&request[i]);
+    }
+    int start;
+    scanf("%d",&start);
+    int i=0;
+    while(i!=n){
+        diff=abs(request[i]-start);
+        start=request[i];
+        sleek+=diff;
+        i++;
+    }
+    printf("sleek time %d",sleek);
+}
+
+---Sample Input:---
+8
+98 183 37 122 14 124 65 67
+53
+
+
+
+
+SET 4 : (ID & FCFS DISK)
+
+a. ID:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: pID.sh
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat pID.sh" to read the shell program
+5) Put "sh pID.sh" to run the shell program
+6) enter value will come : give input 
+Sample Input: bash
+
+
+b. FCFS DISK Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int n,count=0,sleek=0,diff;
+    scanf("%d",&n);
+    int request[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&request[i]);
+    }
+    int start;
+    scanf("%d",&start);
+    int i=0;
+    while(i!=n){
+        diff=abs(request[i]-start);
+        start=request[i];
+        sleek+=diff;
+        i++;
+    }
+    printf("sleek time %d",sleek);
+}
+
+---Sample Input:---
+8
+98 183 37 122 14 124 65 67
+53
+
+
+
+
+SET 5 : (PARENT ID & PRIORITY)
+
+a. Parent Id:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: ppID.sh
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat ppID.sh" to read the shell program
+5) Put "sh ppID.sh" to run the shell program
+6) enter value will come : give input 
+Sample Input: bash
+
+
+b. PRIORITY Algorithm:
+---Program:---
+
+#include<stdio.h>
+int main(){
+    int wt[20],tat[20],n,pos,temp;
+    int process[20];
+    int burst[20];
+    int priority[20];
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d",&burst[i]);
+        scanf("%d", &priority[i]);
+        process[i]=i+1;
+    }
+    for(int i=0;i<n;i++){
+        pos=i;
+        for(int j=i+1;j<n;j++){
+            if(priority[j]<priority[pos]){
+                pos=j;
+            }
+        }
+        temp=priority[i];
+        priority[i]=priority[pos];
+        priority[pos]=temp;
+        temp=burst[i];
+        burst[i]=burst[pos];
+        burst[pos]=temp;
+        temp=process[i];
+        process[i]=process[pos];
+        process[pos]=temp;
+    }
+    int tot_wt=0;
+    wt[0]=0;
+    for(int i=1;i<n;i++){
+        wt[i]=wt[i-1]+burst[i-1];
+        tot_wt+=wt[i];
+    }
+    float avg_wt=(float)tot_wt/(float)n;
+    printf("\nAverage Waiting Time = %f",avg_wt);
+    int tot_tat=0;
+    for(int i=0;i<n;i++){
+        tat[i]=wt[i]+burst[i];
+        tot_tat+=tat[i];
+    }
+    float avg_tat=(float)tot_tat/(float)n;
+    printf("\nAverage Turn Around Time = %f",avg_tat);
+}
+
+---Sample Input:---
+4
+21 2
+3 1
+6 4
+2 3
+
+
+
+
+SET 6 : (PROCESS ERROR & SSTF)
+
+a. Process Error:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: perror.sh
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat perror.sh" to read the shell program
+5) Put "sh perror.sh" to run the shell program
+6) enter value will come : give input 
+Sample Input: imran
+
+
+b. SSTF Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int n,count=0,sleek=0;
+    scanf("%d",&n);
+    int request[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&request[i]);
+    }
+    int start;
+    scanf("%d",&start);
+    while(count!=n){
+        int min=1000,diff,index;
+        for(int i=0;i<n;i++){
+            diff=abs(request[i]-start);
+            if(diff<min){
+                min=diff;
+                index=i;
+            }
+        }
+        sleek+=min;
+        start=request[index];
+        request[index]=1000;
+        count++;
+    }
+    printf("sleek time: %d",sleek);
+}
+
+---Sample Input:---
+8
+98 183 37 122 14 124 65 67
+53
+
+
+
+
+SET 7 : (DIRECTORY & SCAN)
+
+a. DIRECTORY:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: dir.sh
+*Unlike others, Before saving this, open the file and In the first line, she would have written like this:
+DIRECTORY_PATH=./hacks
+u change it to
+DIRECTORY_PATH="copy and paste the path of any file in ur lap"*
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat dir.sh" to read the shell program
+5) Put "sh dir.sh" to run the shell program
+6) No input .. it will run automatically
+
+
+b. SCAN Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main() {
+    int n, count = 0, seek = 0;
+    scanf("%d", &n);
+    int request[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &request[i]);
+    }
+    int start;
+    scanf("%d", &start);
+    int maxrange,minrange;
+    scanf("%d", &minrange);
+    scanf("%d", &maxrange);
+    int direction = 1;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (request[j] > request[j + 1]) {
+                int temp = request[j];
+                request[j] = request[j + 1];
+                request[j + 1] = temp;
+            }
+        }
+    }
+    int startIndex = -1;
+    for (int i = 0; i < n; i++) {
+        if (request[i] >= start) {
+            startIndex = i;
+            break;
+        }
+    }
+    for (int i = startIndex; i < n; i++) {
+        seek += abs(request[i] - start);
+        start = request[i];
+        count++;
+    }
+    if (direction == 1) {
+        seek += abs(start - maxrange);
+        start = maxrange;
+        for (int i = startIndex - 1; i >= 0; i--) {
+            seek += abs(request[i] - start);
+            start = request[i];
+            count++;
+        }
+    }
+    printf("Total OverHeadMovement: %d", seek);
+    return 0;
+}
+
+---Sample Input:---
+7
+82 170 43 140 24 16 190
+50 0 199
+
+
+
+
+SET 8 : (DIRECTORY & FILE IMPLEMENTATION)
+
+a. DIRECTORY:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: dir.sh
+*Unlike others, Before saving this, open the file and In the first line, she would have written like this:
+DIRECTORY_PATH=./hacks
+u change it to
+DIRECTORY_PATH="copy and paste the path of any file in ur lap"*
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat dir.sh" to read the shell program
+5) Put "sh dir.sh" to run the shell program
+6) No input .. it will run automatically
+
+
+b. File Implementation:
+---Program:---
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Directory {
+    char dname[10];
+    char fname[10][10];
+    int fcnt;
+}dir;
+void displayFiles() {
+    if (dir.fcnt == 0)
+        printf("\nDirectory Empty");
+    else {
+        printf("\nThe Files are:\n");
+        for (int i = 0; i < dir.fcnt; i++)
+            printf("%s\n", dir.fname[i]);
+    }
+}
+void deleteFile() {
+    char f[30];
+    printf("\nEnter the name of the file to delete: ");
+    scanf("%s", f);
+    int i;
+    for (i = 0; i < dir.fcnt; i++) {
+        if (strcmp(f, dir.fname[i]) == 0) {
+            printf("%s is deleted\n", f);
+            strcpy(dir.fname[i], dir.fname[dir.fcnt - 1]);
+            dir.fcnt--;
+            return;
+        }
+    }
+    printf("%s not found\n", f);
+}
+void searchFile() {
+    char f[30];
+    printf("\nEnter the name of the file to search: ");
+    scanf("%s", f);
+    int i;
+    for (i = 0; i < dir.fcnt; i++) {
+        if (strcmp(f, dir.fname[i]) == 0) {
+            printf("%s is found\n", f);
+            return;
+        }
+    }
+    printf("%s not found\n", f);
+}
+int main() {
+    int ch;
+    dir.fcnt = 0;
+    printf("\nEnter name of directory: ");
+    scanf("%s", dir.dname);
+    while (1) {
+        printf("\n\n1. Create File\t2. Delete File\t3. Search File\n4. Display Files\t5. Exit\nEnter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1:
+                printf("\nEnter the name of the file: ");
+                scanf("%s", dir.fname[dir.fcnt]);
+                dir.fcnt++;
+                break;
+            case 2:
+                deleteFile();
+                break;
+            case 3:
+                searchFile();
+                break;
+            case 4:
+                displayFiles();
+                break;
+            default:
+                exit(0);
+        }
+    }
+    return 0;
+}
+
+---Sample Input:---
+
+
+
+
+
+
+
+SET 9 : (ARMSTRONG & FCFS DISK)
+
+a. Armstrong:
+---Program:---
+
+read -p "Enter a number: " num
+original_num=$num
+sum=0
+num_digits=${#num}
+while [ $num -gt 0 ]
+do
+  digit=$((num % 10))
+  sum=$((sum + digit**num_digits))
+  num=$((num / 10))
+done
+if [ $sum -eq $original_num ]; then
+  echo "$original_num is an Armstrong number."
+else
+  echo "$original_num is not an Armstrong number."
+fi
+
+---Sample Input:---
+153
+
+
+b. FCFS DISK Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main(){
+    int n,count=0,sleek=0,diff;
+    scanf("%d",&n);
+    int request[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&request[i]);
+    }
+    int start;
+    scanf("%d",&start);
+    int i=0;
+    while(i!=n){
+        diff=abs(request[i]-start);
+        start=request[i];
+        sleek+=diff;
+        i++;
+    }
+    printf("sleek time %d",sleek);
+}
+
+---Sample Input:---
+8
+98 183 37 122 14 124 65 67
+53
+
+
+
+
+SET 10 : (PARENT ID & SCAN)
+
+a. Parent Id:
+---Program:---
+
+Should do in Git Bash / Ubuntu
+Filename: ppID.sh
+Save this file in any directory(Preferably Desktop)
+Steps:
+1) Open git bash
+2) Check ur directory using "pwd" command
+3) Go to desktop by using command "cd desktop"(if any other directory, go to that specific directory)
+4) Put "cat ppID.sh" to read the shell program
+5) Put "sh ppID.sh" to run the shell program
+6) enter value will come : give input 
+Sample Input: bash
+
+
+b. SCAN Algorithm:
+---Program:---
+
+#include<stdio.h>
+#include<stdlib.h>
+int main() {
+    int n, count = 0, seek = 0;
+    scanf("%d", &n);
+    int request[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &request[i]);
+    }
+    int start;
+    scanf("%d", &start);
+    int maxrange,minrange;
+    scanf("%d", &minrange);
+    scanf("%d", &maxrange);
+    int direction = 1;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (request[j] > request[j + 1]) {
+                int temp = request[j];
+                request[j] = request[j + 1];
+                request[j + 1] = temp;
+            }
+        }
+    }
+    int startIndex = -1;
+    for (int i = 0; i < n; i++) {
+        if (request[i] >= start) {
+            startIndex = i;
+            break;
+        }
+    }
+    for (int i = startIndex; i < n; i++) {
+        seek += abs(request[i] - start);
+        start = request[i];
+        count++;
+    }
+    if (direction == 1) {
+        seek += abs(start - maxrange);
+        start = maxrange;
+        for (int i = startIndex - 1; i >= 0; i--) {
+            seek += abs(request[i] - start);
+            start = request[i];
+            count++;
+        }
+    }
+    printf("Total OverHeadMovement: %d", seek);
+    return 0;
+}
+
+---Sample Input:---
+7
+82 170 43 140 24 16 190
+50 0 199
